@@ -43,16 +43,25 @@ export default {
     }
   },
   mounted() {
-    console.log("App Mounted, store: ", this.store);
+    // console.log("App Mounted, store: ", this.store);
     console.log("Dati da .js: ", this.listaFumettiArray);
     console.log("Dati da .json: ", this.listaFumettiJSON);
 
+    //Al caricamento della pagina effettuo una chiamata ad una API
     axios.get(this.store.urlAPI).then(r => {
+      //Se completata correttamente stampo il dato
       console.log("Ricevuto: ", r.data.results);
+      //Copio i dati nello store per riutilizzarli in altri componenti
       this.store.personaggi = r.data.results;
-    }).catch(err => {
-      console.error("Qualcosa è andato storto");
+      //Imposto lo stato "loading" dell'applicazione su false
+      this.store.loading = false;
+    }).catch(errore => {
+      //In caso di problemi, mostro l'errore in console
+      console.error("Qualcosa è andato storto", errore);
+      //Mi assicuro che il dato nello store sia un array vuoto
       this.store.personaggi = [];
+      //Il caricamento è comunque finito anche in questo caso
+      this.store.loading = false;
     });
   }
 }
@@ -61,7 +70,7 @@ export default {
 <template>
   <AppHeader :links="navLinks" :titolo="titoloApplicazione" />
 
-  <main v-if="store.loading == false">
+  <main>
     <Jumbotron />
     <ComicsList :fumetti="listaFumettiJSON" />
     <IconList />

@@ -1,26 +1,14 @@
 <script>
 import AppNavbar from './AppNavbar.vue'
 
-import { store } from '../data/store';
-
 export default {
     name: "AppHeader",
     components: {
         AppNavbar
     },
-    data() {
-        return {
-            store
-        }
-    },
     props: {
         links: Array,
         titolo: String
-    },
-    methods: {
-        caricamentoCompletato() {
-            this.store.loading = !this.store.loading;
-        }
     },
     mounted() {
         console.log("AppHeader mounted", this.links);
@@ -30,8 +18,7 @@ export default {
 
 <template>
     <header>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/DC_Comics_logo.svg" alt="logo"
-            @click="caricamentoCompletato" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/DC_Comics_logo.svg" alt="logo" />
         <h1>{{ titolo }}</h1>
         <AppNavbar :links="links" />
 

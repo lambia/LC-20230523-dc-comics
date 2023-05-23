@@ -1,8 +1,15 @@
 <script>
+import { store } from '../data/store';
+
 export default {
     name: "ComicsList",
     props: {
         fumetti: Array
+    },
+    data() {
+        return {
+            store
+        }
     },
     mounted() {
         console.log("ComicsList mounted", this.fumetti);
@@ -11,11 +18,16 @@ export default {
 </script>
 
 <template>
-    <h2>Comics List</h2>
     <section>
-        <div class="card" v-for="fumetto in fumetti">
-            <img :src="fumetto.thumb" :alt="fumetto.series">
-            <h3>{{ fumetto.series }}</h3>
+        <h2>Comics List</h2>
+        <template v-if="store.loading == true">
+            <span>La pagina sta caricando</span>
+        </template>
+        <div class="comics" v-else>
+            <div class="card" v-for="fumetto in fumetti">
+                <img :src="fumetto.thumb" :alt="fumetto.series">
+                <h3>{{ fumetto.series }}</h3>
+            </div>
         </div>
     </section>
 </template>
@@ -25,16 +37,21 @@ export default {
 
 section {
     background: crimson;
+    color: white;
     padding: 1rem;
-    @include flex(row, center, center, wrap);
 
-    .card {
-        width: 20%;
-        padding: 1rem;
+    .comics {
+        @include flex(row, center, center, wrap);
 
-        img {
-            width: 100%;
+        .card {
+            width: 20%;
+            padding: 1rem;
+
+            img {
+                width: 100%;
+            }
         }
     }
+
 }
 </style>
